@@ -2,6 +2,9 @@
 #define DS18B20_H
 
 #include <string>
+#include <cstdio>
+#include <limits>
+#include <memory>
 #include <iostream>
 
 class DS18B20
@@ -24,6 +27,17 @@ public:
       * Empty destructor
       */
      virtual ~DS18B20();
+
+     /**
+      * Read temperature in degrees celsius
+      * @return float
+      */
+     float readTemp();
+
+private:
+
+    // Address of DS18B20 sensor
+    std::string address;
 };
 
 #endif // DS18B20_H
