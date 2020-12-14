@@ -15,7 +15,8 @@ DS18B20::~DS18B20() {}
 float DS18B20::readTemp()
 {
     // Open file descriptor to read from one-Wire
-    std::unique_ptr<FILE, int(*)(FILE*)> reader{fopen(address.c_str(), "r"), fclose};
+    // std::unique_ptr<FILE, int(*)(FILE*)> reader{fopen(address.c_str(), "r"), fclose};
+    std::unique_ptr<FILE, int(*)(FILE*)> reader {fopen(address.c_str(), "r"), fclose};
 
     // Check if file descriptor could be opened properly
     if (!reader.get() || ferror(reader.get()))
@@ -27,7 +28,7 @@ float DS18B20::readTemp()
 
     // Read current temperature from file descriptor
     char buffer[256] {0};
-    std::cout << "Read: " << fgets(buffer, 256, reader.get()) << ": " << std::string(buffer) << std::endl;
+    std::cout << "Read: " << fread(buffer, 1, 256, reader.get()) << ": " << std::string(buffer) << std::endl;
 
     return 0.0;
 }

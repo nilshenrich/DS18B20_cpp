@@ -11,7 +11,7 @@ include_directories(include)
 
 # Set compiler and linker flags
 target_compile_options(DS18B20 PRIVATE -O2 -Wall -fexceptions)
-target_link_libraries(DS18B20 -s)
+target_link_libraries(DS18B20 -s -lbcm2835)
 
 # Set C++17 standard
 set_target_properties(DS18B20 PROPERTIES
