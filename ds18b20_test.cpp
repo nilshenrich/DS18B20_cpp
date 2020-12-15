@@ -21,7 +21,7 @@ int main()
 
     DS18B20 ds18b20 {"28-3c01d6076edb"};
 
-    ds18b20.readTemp();
+    cout << "Temperature = " << ds18b20.readTemp() << " degrees Celsius" << endl;
 
     return 0;
 }

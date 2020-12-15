@@ -14,21 +14,39 @@ DS18B20::~DS18B20() {}
 
 float DS18B20::readTemp()
 {
-    // Open file descriptor to read from one-Wire
-    // std::unique_ptr<FILE, int(*)(FILE*)> reader{fopen(address.c_str(), "r"), fclose};
-    std::unique_ptr<FILE, int(*)(FILE*)> reader {fopen(address.c_str(), "r"), fclose};
+    // Open one-Wire reader as file stream and read
+    std::ifstream reader {address};
 
-    // Check if file descriptor could be opened properly
-    if (!reader.get() || ferror(reader.get()))
+    // Check if read was good
+    if (!reader.good())
     {
-        std::cerr << "Error while opening \"" << address << "\"" << std::endl;
+        std::cerr << "Read from DS18B20 failed!" << std::endl;
 
         return std::numeric_limits<float>::min();
     }
 
-    // Read current temperature from file descriptor
-    char buffer[256] {0};
-    std::cout << "Read: " << fread(buffer, 1, 256, reader.get()) << ": " << std::string(buffer) << std::endl;
+    // Read first and second lines from message
+    // Format of message:
+    // 64 01 55 05 7f a5 81 66 7c : crc=7c YES
+    // 64 01 55 05 7f a5 81 66 7c t=22250
+    std::string firstLine, secondLine;
+    getline(reader, firstLine);
+    getline(reader, secondLine);
 
-    return 0.0;
+    // Get status from message (Last word of first line)
+    std::string status{firstLine.substr(firstLine.find_last_of(" ") + 1)};
+
+    // Check if temperature was read properly
+    if ("YES" != status)
+    {
+        std::cerr << "Temperature was not measured properly!" << std::endl;
+
+        return std::numeric_limits<float>::min();
+    }
+
+    // Get temperature from message (Number after "t=")
+    int tempInt{std::stoi(secondLine.substr(secondLine.find("t=") + 2))};
+
+    // Return temperature divided by 1000
+    return (float)tempInt / 1000;
 }

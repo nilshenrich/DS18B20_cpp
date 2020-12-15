@@ -2,9 +2,9 @@
 #define DS18B20_H
 
 #include <string>
-#include <cstdio>
+#include <regex>
 #include <limits>
-#include <memory>
+#include <fstream>
 #include <iostream>
 
 class DS18B20
