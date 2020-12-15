@@ -19,7 +19,7 @@ int main()
     bcm2835_gpio_fsel(4, BCM2835_GPIO_FSEL_INPT);
     bcm2835_gpio_set_pud(4, BCM2835_GPIO_PUD_UP);
 
-    DS18B20 ds18b20 {"28-3c01d6076edb"};
+    DS18B20 ds18b20;
 
     cout << "Temperature = " << ds18b20.readTemp() << " degrees Celsius" << endl;
 

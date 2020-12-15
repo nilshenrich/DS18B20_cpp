@@ -1,16 +1,44 @@
 #include "ds18b20.h"
 
-DS18B20::DS18B20(std::string address): address("/sys/bus/w1/devices/" + address + "/w1_slave")
+DS18B20::DS18B20(std::string address): address(oneWireRootFolder + address + oneWireFile)
 {
     std::cout << "Set address to " << address << std::endl;
+
+    return;
 }
 
 DS18B20::DS18B20()
 {
     std::cout << "Find DS18B20 sensor ..." << std::endl;
+
+    // Find first folder whose name starts with "28-"
+    for (const std::filesystem::directory_entry& val: std::filesystem::directory_iterator(oneWireRootFolder))
+    {
+        if (!val.is_directory())
+            continue;
+
+        // Get folder name
+        std::string folderName{val.path().stem().string()};
+
+        if (folderName.find("28-"))
+            continue;
+
+        address = oneWireRootFolder + folderName + oneWireFile;
+
+        std::cout << "Found sensor with address " << folderName << std::endl;
+
+        return;
+    }
+
+    // If code gets here, no connected sensor was found
+    throw std::runtime_error("No connected DS18B20 sensor found!");
 }
 
 DS18B20::~DS18B20() {}
+
+// Set static constants
+const std::string DS18B20::oneWireRootFolder{"/sys/bus/w1/devices/"};
+const std::string DS18B20::oneWireFile{"/w1_slave"};
 
 float DS18B20::readTemp()
 {
@@ -45,8 +73,8 @@ float DS18B20::readTemp()
     }
 
     // Get temperature from message (Number after "t=")
-    int tempInt{std::stoi(secondLine.substr(secondLine.find("t=") + 2))};
+    float tempRaw{std::stof(secondLine.substr(secondLine.find("t=") + 2))};
 
     // Return temperature divided by 1000
-    return (float)tempInt / 1000;
+    return tempRaw / 1000;
 }

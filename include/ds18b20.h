@@ -5,6 +5,7 @@
 #include <regex>
 #include <limits>
 #include <fstream>
+#include <filesystem>
 #include <iostream>
 
 class DS18B20
@@ -36,7 +37,13 @@ public:
 
 private:
 
-    // Address of DS18B20 sensor
+    // Root folder of all one-Wire devices
+    static const std::string oneWireRootFolder;
+
+    // File name of one-Wire device
+    static const std::string oneWireFile;
+
+    // Address of DS18B20 sensor (Calculated in Constructor)
     std::string address;
 };
 
