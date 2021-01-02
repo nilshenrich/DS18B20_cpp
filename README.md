@@ -1,6 +1,6 @@
 # DS18B20_cpp
 
-This is small installable c++ library for raspverry pi (or other single board computers) to communicate with a DS18B20 temperature sensor.
+This is a small installable c++ library for raspberry pi (or other single board computers) to communicate with a DS18B20 temperature sensor.
 
 ## Usage
 
@@ -19,7 +19,7 @@ void test()
 
     // Alternatively you can tell the system to search for a connected sensor
     // Please notice that this method can only find ONE sensor,
-    // if you want to connect multible DS18B20 sensors, please specify the HW addresses as shown above
+    // if you want to connect multiple DS18B20 sensors, please specify the HW addresses as shown above
     DS18B20 ds18b20_alt;
 
     // Read the current temperature with one simple method call
@@ -30,7 +30,7 @@ void test()
 
 ## Installation
 
-This library can be installed this way:
+The library can be installed this way:
 
 1. Clone git repository
 1. Create Makefile to compile code
@@ -38,7 +38,7 @@ This library can be installed this way:
 1. Install library by copying the code to library folder
 
 ```console
-<go to your favourite folder to clone into>
+<go to your favorite folder to clone repository into>
 git clone https://github.com/nilshenrich/DS18B20_cpp.git DS18B20_cpp
 cd DS18B20_cpp
 mkdir build
@@ -48,7 +48,7 @@ make
 sudo make install
 ```
 
-To run test programm, go to repositorys root folder and run compileTest.sh:
+To run test program, go to repositories root folder and run compileTest.sh:
 ```console
 ./compileTest.sh
 ```
@@ -60,18 +60,18 @@ cd build/
 ```
 
 Now the include file ds18b20.h lies in /usr/local/include\
-and the lib files lie in /usr/local/lib
+and the static library files lie in /usr/local/lib
 
 ### Error help
 
-If you get a compiler error because not found include files in you project that uses this DS18B20 library, adding the compiler search path "/usr/local/include" may fix it.\
+If you get a compiler error because not found include files in you project that uses the DS18B20 library, adding the compiler search path "/usr/local/include" may fix it.\
 If you get a linker error, adding the linker search path "/usr/local/lib" and the linker flag "-lds18b20" may fix it.
 
 If you get a runtime error like this:
 ```
 error while loading shared libraries: libds18b20.so.1: cannot open shared object file: No such file or directory
 ```
-runnig this command can solve it:
+running this command can solve it:
 ```console
 sudo /sbin/ldconfig -v
 ```
