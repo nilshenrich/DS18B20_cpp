@@ -73,7 +73,7 @@ error while loading shared libraries: libds18b20.so.1: cannot open shared object
 ```
 running this command can solve it:
 ```console
-sudo /sbin/ldconfig -v
+sudo /sbin/ldconfig
 ```
 
 [See link](https://itsfoss.com/solve-open-shared-object-file-quick-tip/)
