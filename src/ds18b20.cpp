@@ -1,6 +1,6 @@
 #include "ds18b20.h"
 
-DS18B20::DS18B20(std::string address): address(oneWireRootFolder + address + oneWireFile)
+DS18B20::DS18B20(std::string address) : address(oneWireRootFolder + address + oneWireFile)
 {
     std::cout << "Set address to " << address << std::endl;
 
@@ -12,7 +12,7 @@ DS18B20::DS18B20()
     std::cout << "Find DS18B20 sensor ..." << std::endl;
 
     // Find first folder whose name starts with "28-"
-    for (const std::filesystem::directory_entry& val: std::filesystem::directory_iterator(oneWireRootFolder))
+    for (const std::filesystem::directory_entry &val : std::filesystem::directory_iterator(oneWireRootFolder))
     {
         if (!val.is_directory())
             continue;
@@ -43,14 +43,14 @@ const std::string DS18B20::oneWireFile{"/w1_slave"};
 float DS18B20::readTemp()
 {
     // Open one-Wire reader as file stream and read
-    std::ifstream reader {address};
+    std::ifstream reader{address};
 
     // Check if read was good
     if (!reader.good())
     {
         std::cerr << "Read from DS18B20 failed!" << std::endl;
 
-        return std::numeric_limits<float>::min();
+        return std::numeric_limits<float>::quiet_NaN();
     }
 
     // Read first and second lines from message
@@ -69,7 +69,7 @@ float DS18B20::readTemp()
     {
         std::cerr << "Temperature was not measured properly!" << std::endl;
 
-        return std::numeric_limits<float>::min();
+        return std::numeric_limits<float>::quiet_NaN();
     }
 
     // Get temperature from message (Number after "t=")
@@ -78,3 +78,5 @@ float DS18B20::readTemp()
     // Return temperature divided by 1000
     return tempRaw / 1000;
 }
+
+bool DS18B20::isValid(float temperature) { return !std::isnan(temperature); }

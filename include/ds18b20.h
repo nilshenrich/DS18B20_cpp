@@ -7,6 +7,7 @@
 #include <fstream>
 #include <filesystem>
 #include <iostream>
+#include <cmath>
 
 class DS18B20
 {
@@ -19,20 +20,25 @@ public:
     DS18B20();
 
     /**
-      * Constructor with fix sensor address
-      */
+     * Constructor with fix sensor address
+     */
     DS18B20(std::string address);
 
     /**
-      * Empty destructor
-      */
+     * Empty destructor
+     */
     virtual ~DS18B20();
 
     /**
-      * Read temperature in degrees celsius
-      * @return float
-      */
+     * Read temperature in degrees celsius
+     * @return float
+     */
     float readTemp();
+
+    /**
+     * Is temperature value valid?
+     */
+    bool isValid(float temperature);
 
 private:
     // Root folder of all one-Wire devices
